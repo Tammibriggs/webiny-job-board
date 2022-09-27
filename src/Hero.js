@@ -13,7 +13,8 @@ function Hero({
   setJobLevel, 
   setJobType, 
   setJobStation,
-  queryToRefresh
+  queryToRefresh,
+  onSearch
 }) {
   const jobLevelOptions = ['Entery Level', 'Intermediate', 'Senior']
   const jobTypeOptions = ['Full-time', 'Part-time', 'Contract']
@@ -83,7 +84,8 @@ function Hero({
           <div className='hero__searchNfilter'>
             <Search 
               searchValue={searchValue} 
-              setSearchValue={setSearchValue}/>
+              setSearchValue={setSearchValue}
+              onSearch={onSearch}/>
  
             <Select 
               text='Job Level'

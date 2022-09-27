@@ -1,6 +1,6 @@
 import './styles.css';
 import Hero from './Hero';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import JobCard from './JobCard';
 import { gql, useQuery } from '@apollo/client';
 
@@ -25,6 +25,21 @@ function App() {
   const [jobType, setJobType] = useState([])
   const [jobStation, setJobStation] = useState([])
   const {data} = useQuery(LIST_JOBS)
+  const [filteredJobs, setFilteredJobs] = useState([])
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const filtered = data.listJobs.data.filter((job) => 
+      job.title.toLowerCase().includes(searchValue.toLowerCase())
+    )
+    setFilteredJobs(filtered)
+  }
+
+  useEffect(() => {
+    if(data){
+      setFilteredJobs(data.listJobs.data)
+    }
+  }, [data])
 
   return (
     <div className="app">
@@ -32,15 +47,16 @@ function App() {
         searchValue={searchValue}
         setSearchValue = {setSearchValue}
         jobLevel={jobLevel}
-        setJobLevel={setJobLevel}
+        setJobLevel={setJobLevel} 
         jobStation={jobStation}
         setJobStation={setJobStation}
         jobType={jobType}
         setJobType={setJobType}
         queryToRefresh={LIST_JOBS}
+        onSearch={handleSearch}
       />
       <div className='jobs wrapper'>
-        {data?.listJobs?.data.map((job) => (
+        {filteredJobs.map((job) => (
           <JobCard 
             key={job.id}
             title={job.title}

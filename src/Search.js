@@ -1,7 +1,7 @@
-function Search({setSearchValue, searchValue}) {
+function Search({setSearchValue, searchValue, onSearch}) {
  
   return (
-    <form className='search'>
+    <form className='search' onSubmit={onSearch}>
       <input 
         placeholder='Search for job'
         value={searchValue}
