@@ -2,13 +2,7 @@ import Modal from './Modal';
 import { useState } from 'react';
 import Job from './Job';
 
-function JobCard({
-  title='JavaScript Developer', 
-  station='Remote',
-  type='Full-time',
-  level='Entry-level',
-  description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sollicitudin nulla turpis, ac convallis ligula euismod ut. Sed volutpat ac ligula a consectetur. Aenean ultrices finibus tellus, sit amet aliquet orci',
-}) {
+function JobCard({title, station, type, level, description}) {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   return (
     <>
