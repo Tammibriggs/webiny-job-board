@@ -3,10 +3,10 @@ import { useState } from 'react';
 import Job from './Job';
 
 function JobCard({
-  title='Technical Writer', 
+  title='JavaScript Developer', 
   station='Remote',
   type='Full-time',
-  level='Entery level',
+  level='Entry-level',
   description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sollicitudin nulla turpis, ac convallis ligula euismod ut. Sed volutpat ac ligula a consectetur. Aenean ultrices finibus tellus, sit amet aliquet orci',
 }) {
   const [modalIsOpen, setModalIsOpen] = useState(false)

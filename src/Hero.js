@@ -150,6 +150,7 @@ function Hero({
           jobLevelOptions={jobLevelOptions}
           jobTypeOptions={jobTypeOptions}
           jobStationOptions={jobStationOptions}
+          closeModal={() => setModalIsOpen()}
         />
       </Modal>
     </>

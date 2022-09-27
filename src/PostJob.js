@@ -1,8 +1,31 @@
 import { useState } from "react"
 import Input from "./Input"
 import Select from "./Select"
+import { gql, useMutation } from '@apollo/client';
 
-function PostJob({jobLevelOptions, jobTypeOptions, jobStationOptions}) {
+const POST_JOB = gql`
+  mutation CreateJob(
+    $title: String
+    $description: String
+    $type: String
+    $station: String
+    $level: String
+  ){ 
+  createJob(data: {
+    title: $title
+    description: $description
+  	type: $type
+    station: $station
+    level: $level
+  }) {
+    data {
+      id
+    } 
+  }
+}`
+
+
+function PostJob({jobLevelOptions, jobTypeOptions, jobStationOptions, closeModal}) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [jobType, setJobType] = useState('')
@@ -13,9 +36,22 @@ function PostJob({jobLevelOptions, jobTypeOptions, jobStationOptions}) {
     jobType: false, 
     jobStation: false
   })
+  const [postJob, { loading }] = useMutation(POST_JOB);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    postJob({ variables: {
+      title,
+      description,
+      type: jobType,
+      station: jobStation,
+      level: jobLevel
+    }})
+    if(!loading) closeModal()
+  }
 
   return (
-    <form title='applicationForm' className="postJob">
+    <form name='postJob' className="postJob" onSubmit={handleSubmit} >
         <Input
           label='Job title'
           required={true}
@@ -27,8 +63,9 @@ function PostJob({jobLevelOptions, jobTypeOptions, jobStationOptions}) {
           <label htmlFor="desc">Job decscription</label>
           <textarea
             id='desc'
+            value={description}
             onChange={(e) => setDescription(e.target.value)}
-          >{description}</textarea>
+          />
         </div>
 
         <div className="postJob__selects">
