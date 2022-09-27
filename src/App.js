@@ -24,7 +24,7 @@ function App() {
   const [jobLevel, setJobLevel] = useState([])
   const [jobType, setJobType] = useState([])
   const [jobStation, setJobStation] = useState([])
-  const {data, loading} = useQuery(LIST_JOBS)
+  const {data} = useQuery(LIST_JOBS)
 
   return (
     <div className="app">
@@ -37,10 +37,12 @@ function App() {
         setJobStation={setJobStation}
         jobType={jobType}
         setJobType={setJobType}
+        queryToRefresh={LIST_JOBS}
       />
       <div className='jobs wrapper'>
         {data?.listJobs?.data.map((job) => (
           <JobCard 
+            key={job.id}
             title={job.title}
             station={job.station}
             type={job.type}

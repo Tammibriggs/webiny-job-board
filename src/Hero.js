@@ -12,7 +12,8 @@ function Hero({
   jobLevel, 
   setJobLevel, 
   setJobType, 
-  setJobStation
+  setJobStation,
+  queryToRefresh
 }) {
   const jobLevelOptions = ['Entery Level', 'Intermediate', 'Senior']
   const jobTypeOptions = ['Full-time', 'Part-time', 'Contract']
@@ -150,7 +151,8 @@ function Hero({
           jobLevelOptions={jobLevelOptions}
           jobTypeOptions={jobTypeOptions}
           jobStationOptions={jobStationOptions}
-          closeModal={() => setModalIsOpen()}
+          closeModal={() => setModalIsOpen(false)}
+          queryToRefresh={queryToRefresh}
         />
       </Modal>
     </>

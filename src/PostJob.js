@@ -25,7 +25,7 @@ const POST_JOB = gql`
 }`
 
 
-function PostJob({jobLevelOptions, jobTypeOptions, jobStationOptions, closeModal}) {
+function PostJob({jobLevelOptions, jobTypeOptions, jobStationOptions, closeModal, queryToRefresh}) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [jobType, setJobType] = useState('')
@@ -36,7 +36,11 @@ function PostJob({jobLevelOptions, jobTypeOptions, jobStationOptions, closeModal
     jobType: false, 
     jobStation: false
   })
-  const [postJob, { loading }] = useMutation(POST_JOB);
+  const [postJob, { loading }] = useMutation(POST_JOB, {
+    refetchQueries: [
+      {query: queryToRefresh}
+    ],
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
