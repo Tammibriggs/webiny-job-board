@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Input from "./Input"
 import { gql, useMutation } from '@apollo/client';
 
@@ -30,6 +30,7 @@ function Job({
   level,
   type,
   description,
+  noOfApplicants,
   closeModal,
   id
 }) {
@@ -40,7 +41,6 @@ function Job({
   const [website, setWebsite] = useState('')
   const [linkedInProfile, setlinkedInProfile] = useState('')
   const [applyForJob] = useMutation(APPLY_FOR_JOB);
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -63,7 +63,7 @@ function Job({
     <div className='job'>
       <div>
         <span className="dot">{station}</span>
-        <span className='job__applicants'>0 appliacants</span>
+        <span className='job__applicants'>{noOfApplicants || 0} appliacants</span>
       </div>
       <div>
         <img src="/briefcase.png" alt="briefcase"/>

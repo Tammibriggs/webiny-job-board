@@ -1,9 +1,29 @@
 import Modal from './Modal'; 
 import { useState } from 'react';
 import Job from './Job';
+import { gql, useQuery } from '@apollo/client';
+
+const LIST_APPLICATION = gql`
+query ListApplications($where: ApplicationListWhereInput){
+  listApplications(where: $where) {
+    data {
+      id
+    }
+  }
+}
+`
+
 
 function JobCard({id, title, station, type, level, description}) {
   const [modalIsOpen, setModalIsOpen] = useState(false)
+  const {data} = useQuery(LIST_APPLICATION, {
+    variables: {
+      where: {ref: {id}}
+    }
+  })
+
+  const noOfApplicants = data?.listApplications?.data.length
+
   return (
     <>
       <div className="jobCard">
@@ -11,7 +31,9 @@ function JobCard({id, title, station, type, level, description}) {
           <h2>{title}</h2>
           <div>
             <span className='dot'>{station}</span>
-            <span className='jobCard__applicants'>0 appliacants</span>
+            <span className='jobCard__applicants'>
+              {noOfApplicants || 0} appliacants
+            </span>
           </div>
 
           <div>
@@ -33,6 +55,7 @@ function JobCard({id, title, station, type, level, description}) {
           type={type}
           level={level}
           description={description}
+          noOfApplicants={noOfApplicants}
           closeModal={() => setModalIsOpen(false)}
           id={id}
         />
