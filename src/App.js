@@ -41,6 +41,31 @@ function App() {
     }
   }, [data])
 
+  useEffect(() => {
+    if(data) {
+      let filtered = data.listJobs.data
+      // for jobLevel select
+      if(jobLevel.length) {
+        filtered = filtered.filter((job) => 
+          jobLevel.includes(job.level)
+        )
+      }
+      // for jobStation select
+      if(jobStation.length) {
+        filtered = filtered.filter((job) => 
+          jobStation.includes(job.station)
+        )
+      }
+      // for jobType select
+      if(jobType.length) {
+        filtered = filtered.filter((job) => 
+          jobType.includes(job.type)
+        )
+      }
+      setFilteredJobs(filtered)
+    }
+  }, [jobType, jobStation, jobLevel, data])
+
   return (
     <div className="app">
       <Hero 

@@ -16,7 +16,7 @@ function Hero({
   queryToRefresh,
   onSearch
 }) {
-  const jobLevelOptions = ['Entery Level', 'Intermediate', 'Senior']
+  const jobLevelOptions = ['Entry level', 'Intermediate', 'Senior']
   const jobTypeOptions = ['Full-time', 'Part-time', 'Contract']
   const jobStationOptions = ['Remote', 'Hybrid', 'On-site']
 
