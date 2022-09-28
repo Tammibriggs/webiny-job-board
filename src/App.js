@@ -84,6 +84,7 @@ function App() {
         {filteredJobs.map((job) => (
           <JobCard 
             key={job.id}
+            id={job.id}
             title={job.title}
             station={job.station}
             type={job.type}

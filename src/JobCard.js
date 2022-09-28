@@ -2,7 +2,7 @@ import Modal from './Modal';
 import { useState } from 'react';
 import Job from './Job';
 
-function JobCard({title, station, type, level, description}) {
+function JobCard({id, title, station, type, level, description}) {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   return (
     <>
@@ -33,6 +33,8 @@ function JobCard({title, station, type, level, description}) {
           type={type}
           level={level}
           description={description}
+          closeModal={() => setModalIsOpen(false)}
+          id={id}
         />
       </Modal>
     </>

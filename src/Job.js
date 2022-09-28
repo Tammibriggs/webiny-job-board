@@ -1,11 +1,37 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Input from "./Input"
+import { gql, useMutation } from '@apollo/client';
+
+const APPLY_FOR_JOB = gql`
+  mutation CreateApplication(
+    $name: String
+    $email: String
+    $website: String
+    $linkedInProfile: String
+    $phoneNumber: Number
+    $ref: RefFieldInput
+  ){ 
+    createApplication(data: {
+    name: $name
+    email: $email
+  	website: $website
+    linkedInProfile: $linkedInProfile
+    phoneNumber: $phoneNumber
+    ref: $ref
+  }) {
+    data {
+      id
+    } 
+  }
+}`
 
 function Job({
   station,
   level,
   type,
-  description
+  description,
+  closeModal,
+  id
 }) {
 
   const [name, setName] = useState('')
@@ -13,6 +39,25 @@ function Job({
   const [phoneNumber, setPhoneNumber] = useState('')
   const [website, setWebsite] = useState('')
   const [linkedInProfile, setlinkedInProfile] = useState('')
+  const [applyForJob] = useMutation(APPLY_FOR_JOB);
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    applyForJob({ variables: {
+      name,
+      email,
+      website,
+      linkedInProfile,
+      phoneNumber,
+      website,
+      ref: {
+        modelId: "JOB",
+        id
+      }
+    }})
+    closeModal()
+  }
 
   return (
     <div className='job'>
@@ -32,7 +77,7 @@ function Job({
 
       <div className="job__apply">
         <h2>Submit Your Application</h2>
-        <form name='applicationForm'>
+        <form name='applicationForm' onSubmit={handleSubmit}>
           <Input
             label='Full name'
             required={true}
