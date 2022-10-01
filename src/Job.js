@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Input from "./Input"
 import { gql, useMutation } from '@apollo/client';
 
@@ -25,6 +25,16 @@ const APPLY_FOR_JOB = gql`
   }
 }`
 
+const PUBLISH_APPLICATION = gql`
+mutation PublishApplication($revision: ID!) {
+  publishApplication(revision: $revision) {
+    data {
+      id
+    }
+  }
+}
+`
+
 function Job({
   station,
   level,
@@ -40,7 +50,12 @@ function Job({
   const [phoneNumber, setPhoneNumber] = useState('')
   const [website, setWebsite] = useState('')
   const [linkedInProfile, setlinkedInProfile] = useState('')
-  const [applyForJob] = useMutation(APPLY_FOR_JOB);
+  const [applyForJob] = useMutation(APPLY_FOR_JOB, {
+    context: {endpointType: 'manage'},
+  }); 
+  const [publishApplication] = useMutation(PUBLISH_APPLICATION, {
+    context: {endpointType: 'manage'},
+  })
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -50,13 +65,18 @@ function Job({
       website,
       linkedInProfile,
       phoneNumber,
-      website,
       ref: {
         modelId: "JOB",
         id
       }
-    }})
-    closeModal()
+    }}).then(({data}) => {
+      publishApplication({
+        variables: {
+          revision: data.createApplication.data.id
+        }
+      })
+      closeModal()
+    })
   }
 
   return (

@@ -24,6 +24,15 @@ const POST_JOB = gql`
   }
 }`
 
+const PUBLISH_JOB = gql`
+mutation PublishJob($revision: ID!) {
+  publishJob(revision: $revision) {
+    data {
+      id
+    }
+  }
+}
+`
 
 function PostJob({jobLevelOptions, jobTypeOptions, jobStationOptions, closeModal, queryToRefresh}) {
   const [title, setTitle] = useState('')
@@ -37,10 +46,14 @@ function PostJob({jobLevelOptions, jobTypeOptions, jobStationOptions, closeModal
     jobStation: false
   })
   const [postJob, { loading }] = useMutation(POST_JOB, {
+    context: {endpointType: 'manage'},
     refetchQueries: [
       {query: queryToRefresh}
     ],
   });
+  const [publishJob] = useMutation(PUBLISH_JOB, {
+    context: {endpointType: 'manage'},
+  })
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -50,8 +63,14 @@ function PostJob({jobLevelOptions, jobTypeOptions, jobStationOptions, closeModal
       type: jobType,
       station: jobStation,
       level: jobLevel
-    }})
-    if(!loading) closeModal()
+    }}).then(({data}) => {
+      publishJob({
+        variables: {
+          revision: data.createJob.data.id
+        }
+      })
+      closeModal()
+    })
   }
 
   return (

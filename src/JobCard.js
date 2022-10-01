@@ -13,10 +13,10 @@ query ListApplications($where: ApplicationListWhereInput){
 }
 `
 
-
 function JobCard({id, title, station, type, level, description}) {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const {data} = useQuery(LIST_APPLICATION, {
+    context: {endpointType: 'read'},
     variables: {
       where: {ref: {id}}
     }

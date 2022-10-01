@@ -24,7 +24,9 @@ function App() {
   const [jobLevel, setJobLevel] = useState([])
   const [jobType, setJobType] = useState([])
   const [jobStation, setJobStation] = useState([])
-  const {data} = useQuery(LIST_JOBS)
+  const {data} = useQuery(LIST_JOBS, {
+    context: {endpointType: 'read'}
+  })
   const [filteredJobs, setFilteredJobs] = useState([])
 
   const handleSearch = (e) => {
