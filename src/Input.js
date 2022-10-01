@@ -1,7 +1,7 @@
-function Input({placehoder, type, value, setValue, label, required, removeArrows}) {
+function Input({placehoder, type, value, setValue, label, required=false, removeArrows}) {
   return (
     <div className="input">
-      <label className={required && 'input__addSymbol'}>{label}</label>
+      <label className={required ? 'input__addSymbol' : ''}>{label}</label>
       <input 
         className={removeArrows ? 'removeArrows' : ''}
         value={value}
@@ -14,4 +14,4 @@ function Input({placehoder, type, value, setValue, label, required, removeArrows
   )
 }
 
-export default Input
+export default Input 

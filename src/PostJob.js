@@ -7,16 +7,16 @@ const POST_JOB = gql`
   mutation CreateJob(
     $title: String
     $description: String
-    $type: String
-    $station: String
-    $level: String
+    $jobType: String
+    $jobStation: String
+    $jobLevel: String
   ){ 
   createJob(data: {
     title: $title
     description: $description
-  	type: $type
-    station: $station
-    level: $level
+  	jobType: $jobType
+    jobStation: $jobStation
+    jobLevel: $jobLevel
   }) {
     data {
       id
@@ -24,6 +24,15 @@ const POST_JOB = gql`
   }
 }`
 
+const PUBLISH_JOB = gql`
+mutation PublishJob($revision: ID!) {
+  publishJob(revision: $revision) {
+    data {
+      id
+    }
+  }
+}
+`
 
 function PostJob({jobLevelOptions, jobTypeOptions, jobStationOptions, closeModal, queryToRefresh}) {
   const [title, setTitle] = useState('')
@@ -37,21 +46,31 @@ function PostJob({jobLevelOptions, jobTypeOptions, jobStationOptions, closeModal
     jobStation: false
   })
   const [postJob, { loading }] = useMutation(POST_JOB, {
+    context: {endpointType: 'manage'},
     refetchQueries: [
       {query: queryToRefresh}
     ],
   });
+  const [publishJob] = useMutation(PUBLISH_JOB, {
+    context: {endpointType: 'manage'},
+  })
 
   const handleSubmit = (e) => {
     e.preventDefault();
     postJob({ variables: {
       title,
       description,
-      type: jobType,
-      station: jobStation,
-      level: jobLevel
-    }})
-    if(!loading) closeModal()
+      jobType,
+      jobStation,
+      jobLevel
+    }}).then(({data}) => {
+      publishJob({
+        variables: {
+          revision: data.createJob.data.id
+        }
+      })
+      closeModal()
+    })
   }
 
   return (
@@ -139,7 +158,7 @@ function PostJob({jobLevelOptions, jobTypeOptions, jobStationOptions, closeModal
             ))}
           </Select>
         </div>
-        <button>Post</button>
+        <button disabled={loading} style={{backgroundColor: `${loading && 'gray'}`}}>Post</button>
       </form>
 )
 }

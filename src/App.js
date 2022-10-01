@@ -11,9 +11,9 @@ const LIST_JOBS = gql`
       id
       title
       description
-      type
-      station
-      level
+      jobType
+      jobStation
+      jobLevel
     }
   }
 }
@@ -24,7 +24,9 @@ function App() {
   const [jobLevel, setJobLevel] = useState([])
   const [jobType, setJobType] = useState([])
   const [jobStation, setJobStation] = useState([])
-  const {data} = useQuery(LIST_JOBS)
+  const {data} = useQuery(LIST_JOBS, {
+    context: {endpointType: 'read'}
+  })
   const [filteredJobs, setFilteredJobs] = useState([])
 
   const handleSearch = (e) => {
@@ -47,19 +49,19 @@ function App() {
       // for jobLevel select
       if(jobLevel.length) {
         filtered = filtered.filter((job) => 
-          jobLevel.includes(job.level)
+          jobLevel.includes(job.jobLevel)
         )
       }
       // for jobStation select
       if(jobStation.length) {
         filtered = filtered.filter((job) => 
-          jobStation.includes(job.station)
+          jobStation.includes(job.jobStation)
         )
       }
       // for jobType select
       if(jobType.length) {
         filtered = filtered.filter((job) => 
-          jobType.includes(job.type)
+          jobType.includes(job.jobType)
         )
       }
       setFilteredJobs(filtered)
@@ -86,9 +88,9 @@ function App() {
             key={job.id}
             id={job.id}
             title={job.title}
-            station={job.station}
-            type={job.type}
-            level={job.level}
+            station={job.jobStation}
+            type={job.jobType}
+            level={job.jobLevel}
             description={job.description}
           />
         ))}
