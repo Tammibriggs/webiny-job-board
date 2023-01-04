@@ -26,7 +26,17 @@ function Hero({
     jobStation: false
   })
   const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
   const [selected, setSelected] = useState([])
+  const [windowWidth, setWindowWidth] = useState(0)
+
+  // get the width of the browser and store it in state
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setWindowWidth(window.innerWidth)
+    })
+    setWindowWidth(window.innerWidth)
+  }, [])
 
   // Adding checked checkbox to the state and removing unchecked checkbox from the state
   const handleChange = (e, state, setState) => {
@@ -44,6 +54,14 @@ function Hero({
         }
       }
   }, [openSelect, selected])
+
+  const closeAllSelect = () => {
+    setOpenSelect({
+      jobLevel: false, 
+      jobType: false, 
+      jobStation: false
+    })
+  }
 
   const toggleJobLevelSelect = () => {
     setOpenSelect({
@@ -86,60 +104,69 @@ function Hero({
               searchValue={searchValue} 
               setSearchValue={setSearchValue}
               onSearch={onSearch}/>
- 
-            <Select 
-              text='Job Level'
-              open={openSelect.jobLevel}
-              toggleSelect={toggleJobLevelSelect}
-            >
-              {jobLevelOptions.map((option, i) => 
-                <div key={i}>
-                  <input 
-                    type='checkbox' 
-                    id={option} 
-                    value={option} 
-                    className='chk'
-                    onChange={(e) => handleChange(e, jobLevel, setJobLevel)}/>
-                  <label htmlFor={option}>{option}</label>
-                </div>
-              )}
-            </Select>
+            {windowWidth >= 700  &&
+              <div className='hero__filterOptions'>
+                <Select 
+                  text='Job Level'
+                  open={openSelect.jobLevel}
+                  toggleSelect={toggleJobLevelSelect}
+                >
+                  {jobLevelOptions.map((option, i) => 
+                    <div key={i}>
+                      <input 
+                        type='checkbox' 
+                        id={option} 
+                        value={option} 
+                        className='chk'
+                        onChange={(e) => handleChange(e, jobLevel, setJobLevel)}/>
+                      <label htmlFor={option}>{option}</label>
+                    </div>
+                  )}
+                </Select>
 
-            <Select 
-              text='Remote/On-site'
-              open={openSelect.jobStation}
-              toggleSelect={toggleJobStationSelect}
-            >
-              {jobStationOptions.map((option, i) => 
-                <div key={i}>
-                  <input 
-                    type='checkbox' 
-                    id={option} 
-                    value={option} 
-                    className='chk'
-                    onChange={(e) => handleChange(e, jobStation, setJobStation)}/>
-                  <label htmlFor={option}>{option}</label>
-                </div>
-              )}
-            </Select>
+                <Select 
+                  text='Remote/On-site'
+                  open={openSelect.jobStation}
+                  toggleSelect={toggleJobStationSelect}
+                >
+                  {jobStationOptions.map((option, i) => 
+                    <div key={i}>
+                      <input 
+                        type='checkbox' 
+                        id={option} 
+                        value={option} 
+                        className='chk'
+                        onChange={(e) => handleChange(e, jobStation, setJobStation)}/>
+                      <label htmlFor={option}>{option}</label>
+                    </div>
+                  )}
+                </Select>
 
-            <Select 
-              text='Job Type'
-              open={openSelect.jobType}
-              toggleSelect = {toggleJobTypeSelect}
-            >
-              {jobTypeOptions.map((option, i) => 
-                <div key={i}>
-                  <input 
-                    type='checkbox' 
-                    id={option} 
-                    value={option} 
-                    className='chk'
-                    onChange={(e) => handleChange(e, jobType, setJobType)}/>
-                  <label htmlFor={option}>{option}</label>
-                </div>
-              )}
-            </Select>
+                <Select 
+                  text='Job Type'
+                  open={openSelect.jobType}
+                  toggleSelect = {toggleJobTypeSelect}
+                >
+                  {jobTypeOptions.map((option, i) => 
+                    <div key={i}>
+                      <input 
+                        type='checkbox' 
+                        id={option} 
+                        value={option} 
+                        className='chk'
+                        onChange={(e) => handleChange(e, jobType, setJobType)}/>
+                      <label htmlFor={option}>{option}</label>
+                    </div>
+                  )}
+                </Select>
+              </div>
+            }
+            <img 
+              src='/filter1.png' 
+              alt='filter' 
+              className='hero__filterImage'
+              onClick={() => setIsFilterModalOpen(true)}
+            />
           </div>
         </div>
       </div>
@@ -156,6 +183,67 @@ function Hero({
           closeModal={() => setModalIsOpen(false)}
           queryToRefresh={queryToRefresh}
         />
+      </Modal>
+
+      <Modal
+        open={isFilterModalOpen} 
+        onClose={() => {setIsFilterModalOpen(false); closeAllSelect()}}
+      >
+        <div className='hero__modalFilterOptions'>
+          <Select
+            text='Job Level'
+            open={openSelect.jobLevel}
+            toggleSelect={toggleJobLevelSelect}
+          >
+            {jobLevelOptions.map((option, i) => 
+              <div key={i}>
+                <input 
+                  type='checkbox' 
+                  id={option} 
+                  value={option} 
+                  className='chk'
+                  onChange={(e) => handleChange(e, jobLevel, setJobLevel)}/>
+                <label htmlFor={option}>{option}</label>
+              </div>
+            )}
+          </Select>
+
+          <Select 
+            text='Remote/On-site'
+            open={openSelect.jobStation}
+            toggleSelect={toggleJobStationSelect}
+          >
+            {jobStationOptions.map((option, i) => 
+              <div key={i}>
+                <input 
+                  type='checkbox' 
+                  id={option} 
+                  value={option} 
+                  className='chk'
+                  onChange={(e) => handleChange(e, jobStation, setJobStation)}/>
+                <label htmlFor={option}>{option}</label>
+              </div>
+            )}
+          </Select>
+
+          <Select 
+            text='Job Type'
+            open={openSelect.jobType}
+            toggleSelect = {toggleJobTypeSelect}
+          >
+            {jobTypeOptions.map((option, i) => 
+              <div key={i}>
+                <input 
+                  type='checkbox' 
+                  id={option} 
+                  value={option} 
+                  className='chk'
+                  onChange={(e) => handleChange(e, jobType, setJobType)}/>
+                <label htmlFor={option}>{option}</label>
+              </div>
+            )}
+          </Select>
+        </div>
       </Modal>
     </>
   )

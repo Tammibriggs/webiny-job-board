@@ -83,6 +83,7 @@
 /* Hero */
 .hero {
   background-color: rgb(225,231,236);
+  height: 180px;
 }
 
 header {
@@ -118,6 +119,11 @@ header button:active {
   height: 150px;
 }
 
+.hero__filterOptions {
+  display: flex;
+  gap: 10px;
+}
+
 .hero .hero__searchNfilter {
   background-color: white;
   border-radius: 50px;
@@ -132,7 +138,33 @@ header button:active {
   box-sizing: content-box;
   width: fit-content;
   gap: 10px;
+}
 
+.hero__modalFilterOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hero__modalFilterOptions .select__options {
+  z-index: 1;
+}
+
+.hero__filterImage {
+  width: 25px;
+  cursor: pointer;
+}
+
+@media(min-width: 700px) {
+  .hero__filterImage {
+    display: none;
+  }
+}
+
+@media(min-width: 472px) {
+  .hero {
+    height: inherit;
+  }
 }
 
 /* Seach */
@@ -149,6 +181,7 @@ header button:active {
   background-color: inherit;
   border-top-left-radius: inherit;
   border-bottom-left-radius: inherit;
+  width: 100%;
   padding: 0 10px;
 }
 
@@ -307,6 +340,7 @@ header button:active {
   font-size: 24px;
   cursor: pointer;
   color: rgb(94, 96, 98);
+  z-index: 1;
 }
 
 .modal__close:hover{
